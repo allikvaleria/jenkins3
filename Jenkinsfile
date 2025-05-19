@@ -2,20 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Docker Image') {
+        stage('Create an image') {
             steps {
-                script {
-                    dockerImage = docker.build("endpoint-app")
-                }
+                sh 'docker build . -t travel'
             }
         }
-
-        stage('Run Docker Container') {
+        stage('Docker run') {
             steps {
-                script {
-                    sh 'docker rm -f endpoint-container || true'
-                    dockerImage.run("-d -p 3000:3000 --name endpoint-container")
-                }
+                sh 'docker run -p 3002:3000 --name container2 -d travel'
             }
         }
     }
